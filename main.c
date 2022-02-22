@@ -1,7 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
+
 #include utils_menu.c
 #include utils_direct.c;
 #include utils_group.c;
 #include utils_broker.c;
+
+#define PORTA     "tcp://localhost:1883"
+
 
 int FEscolha;
 
@@ -35,3 +43,10 @@ int main(int argc, char *argv[]){
         }
     }
 }
+
+
+
+//mutex
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex3 = PTHREAD_MUTEX_INITIALIZER;
