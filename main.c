@@ -10,41 +10,20 @@
 
 #define PORTA     "tcp://localhost:1883"
 
+int escolha;
 
-int FEscolha;
 
 int main(int argc, char *argv[]){
-    while(true){
-        menu();
-        scanf("%d", FEscolha);
-
-        switch(FEscolha){
-            case 1:
-                sendDirectMessage();
-                break;
-            case 2:
-                acceptDirectMessage();
-                break;
-            case 3:
-                requestDirectMessage();
-                break;
-            case 4:
-                sendGroupMessage();
-                break;
-            case 5:
-                enterOrCreateGroup();
-                break;
-            case 6:
-                stopBroker();
-                break;
-            case 0:
-                printf("Valeu falou!\n");
-                break;
-        }
-    }
+    MQTTAsync mqttClient;
+    MQTTAsync_connectOptions connectOptions = MQTTAsync_connectOptions_initializer;
+    MQTTAsync_disconnectOptions disconnectOptions = MQTTAsync_disconnectOptions_initializer;
+    
+    configConnection(connectOptions);
+    configDisconnection(disconnectOptions);
+    
+    printMenu();
+    doSelection();
 }
-
-
 
 //mutex
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
