@@ -20,16 +20,16 @@ int main(int argc, char *argv[]){
     /* end */
 
     /* ini */
-	if ((errorCode = MQTTAsync_create(&mqttClient, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
+	if ((ERRORCODE = MQTTAsync_create(&mqttClient, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL)) != MQTTASYNC_SUCCESS)
 	{
-        printError("Falha ao criar o cliente!", errorCode);
-		errorCode = EXIT_FAILURE;
+        printError("Falha ao criar o cliente!", ERRORCODE);
+		ERRORCODE = EXIT_FAILURE;
         goto exit;
 	}
-	if ((errorCode = MQTTAsync_setCallbacks(mqttClient, mqttClient, connectionLost, messageReceived, NULL)) != MQTTASYNC_SUCCESS)
+	if ((ERRORCODE = MQTTAsync_setCallbacks(mqttClient, mqttClient, connectionLost, messageReceived, NULL)) != MQTTASYNC_SUCCESS)
 	{
-        printError("Falha ao configurar os callbacks!", errorCode);
-		errorCode = EXIT_FAILURE;
+        printError("Falha ao configurar os callbacks!", ERRORCODE);
+		ERRORCODE = EXIT_FAILURE;
 		goto destroy_exit;
 	}
     /* end */
@@ -41,10 +41,10 @@ int main(int argc, char *argv[]){
     connectOptions.onFailure = onConnectionFailure;
     connectOptions.context = mqttClient;
 
-	if ((errorCode = MQTTAsync_connect(mqttClient, &conn_opts)) != MQTTASYNC_SUCCESS)
+	if ((ERRORCODE = MQTTAsync_connect(mqttClient, &connectOptions)) != MQTTASYNC_SUCCESS)
 	{
-        printError("Falha ao iniciar conexão.", errorCode);
-		errorCode = EXIT_FAILURE;
+        printError("Falha ao iniciar conexão.", ERRORCODE);
+		ERRORCODE = EXIT_FAILURE;
 		goto destroy_exit;
 	}
     /* end - connection config */
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]){
 
     /* ini - menu */
     printMenu();
-    
+
     while(true){
         scanf("%d", choice);
 
@@ -77,9 +77,9 @@ int main(int argc, char *argv[]){
                 enterOrCreateGroup(mqttClient);
                 break;
             case 6:
-                if ((errorCode = MQTTAsync_disconnect(mqttClient, &disconnectOptions)) != MQTTASYNC_SUCCESS){
-                    printError("Falha ao desconectar!", errorCode);
-                    errorCode = EXIT_FAILURE;
+                if ((ERRORCODE = MQTTAsync_disconnect(mqttClient, &disconnectOptions)) != MQTTASYNC_SUCCESS){
+                    printError("Falha ao desconectar!", ERRORCODE);
+                    ERRORCODE = EXIT_FAILURE;
                     goto destroy_exit;
                 }
                 break;
@@ -89,10 +89,8 @@ int main(int argc, char *argv[]){
         }
     }
     /* end - menu */
-    menuInvoke(mqttClient, disconnectOptions);
-
 destroy_exit:
-    MQTTAsync_destroy(&client);
+    MQTTAsync_destroy(&mqttClient);
 exit:
-    return errorCode;
+    return ERRORCODE;
 }

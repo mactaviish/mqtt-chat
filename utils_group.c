@@ -1,4 +1,6 @@
-void sendGroupMessage(){
+#include "./utils_consts.h"
+
+void sendGroupMessage(MQTTAsync mqttClient){
     
 }
 
@@ -10,10 +12,10 @@ void enterOrCreateGroup(){
     }
 }
 
-void acceptGroupInvite(){
+void acceptGroupInvite(MQTTAsync mqttClient){
     
 }
 
-void sendGroupInvite(){
+void sendGroupInvite(MQTTAsync mqttClient){
 
 }

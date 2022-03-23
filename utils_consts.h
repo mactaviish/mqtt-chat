@@ -5,12 +5,12 @@
 #include <unistd.h>
 #include "MQTTAsync.h"
 
-#define ADDRESS     "tcp://mqtt.eclipse.org:1883"
+#define ADDRESS     "tcp://localhost:1883"
 #define QOS         1
 #define TIMEOUT     10000L
 
 char CLIENTID;
-int errorCode;
+int ERRORCODE;
 
 void printError(char message, int error){
     printf('%c.\n', message)

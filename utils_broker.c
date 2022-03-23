@@ -21,9 +21,9 @@ void connectionLost(void *context, char *cause)
 	connectOptions.keepAliveInterval = 20;
 	connectOptions.cleansession = 1;
 
-	if ((errorCode = MQTTAsync_connect(client, &connectOptions)) != MQTTASYNC_SUCCESS)
+	if ((ERRORCODE = MQTTAsync_connect(client, &connectOptions)) != MQTTASYNC_SUCCESS)
 	{
-        printError("Falha ao iniciar conexão!", errorCode);
+        printError("Falha ao iniciar conexão!", ERRORCODE);
 		finished = 1;
 	}
 }
