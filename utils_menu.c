@@ -1,5 +1,12 @@
+#include "./utils_consts.h"
+
+void menuInvoke(MQTTAsync mqttClient, MQTTAsync_disconnectOptions disconnectOptions){
+    printMenu();
+    doSelection(mqttClient, disconnectOptions);
+}
+
 void printMenu(){
-    printf("Bem-vind@!\n\n");
+    printf("Bem-vind@ novamente!\n\n");
 
     printf("[1] Enviar mensagem para um usuário...\n");
     printf("[2] Aceitar um novo chat...\n");
@@ -10,32 +17,53 @@ void printMenu(){
     printf("[0] Sair...\n");
 }
 
-void doSelection(){
-    while(true){
-        scanf("%d", escolha);
+void doSelection(MQTTAsync mqttClient, MQTTAsync_disconnectOptions disconnectOptions){
+    int choice;
 
-        switch(escolha){
+    while(true){
+        scanf("%d", choice);
+
+        switch(choice){
             case 1:
-                sendDirectMessage();
+                sendDirectMessage(mqttClient);
                 break;
             case 2:
-                acceptDirectMessage();
+                acceptDirectMessage(mqttClient);
                 break;
             case 3:
-                requestDirectMessage();
+                requestDirectMessage(mqttClient);
                 break;
             case 4:
-                sendGroupMessage();
+                sendGroupMessage(mqttClient);
                 break;
             case 5:
-                enterOrCreateGroup();
+                enterOrCreateGroup(mqttClient);
                 break;
             case 6:
-                stopBroker();
+                stopBroker(mqttClient, disconnectOptions);
                 break;
             case 0:
                 printf("Valeu falou!\n");
                 break;
         }
     }
+}
+
+void getClientID(){
+    printf("Digite seu ID:\n");
+
+    while(true){
+        scanf("%d", CLIENTID);
+        if (CLIENTID > 0) {
+            break;
+        }
+    }
+}
+
+void stopBroker(MQTTAsync mqttClient, MQTTAsync_disconnectOptions disconnectOptions){
+	if ((errorCode = MQTTAsync_disconnect(mqttClient, &disconnectOptions)) != MQTTASYNC_SUCCESS){
+        printError("Falha ao desconectar!", errorCode);
+		errorCode = EXIT_FAILURE;
+		destroyExit(mqttClient);
+	}
 }
