@@ -17,12 +17,6 @@ void printError(char message, int error){
     printf('Error code: %d.\n', error);
 }
 
-void destroyExit(MQTTAsync mqttClient){
-    MQTTAsync_destroy(&client);
-    exit:
-        return errorCode;
-}
-
 pthread_mutex_t thread_mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t thread_mutex2 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t thread_mutex3 = PTHREAD_MUTEX_INITIALIZER;

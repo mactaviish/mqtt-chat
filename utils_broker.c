@@ -1,31 +1,11 @@
 #include "./utils_consts.h"
-
-void configConnection(MQTTAsync_connectOptions connectOptions, MQTTAsync mqttClient){
-	connectOptions.keepAliveInterval = 20;              // tempo maximo sem comunicacao entre o cliente e o servidor
-	connectOptions.cleansession = 0;                    // manter a sessao anterior do usuario
-    connectOptions.onSuccess = onConnect;
-    connectOptions.onFailure = onConnectionFailure;
-    connectOptions.context = mqttClient;
-
-	if ((errorCode = MQTTAsync_connect(mqttClient, &conn_opts)) != MQTTASYNC_SUCCESS)
-	{
-        printError("Falha ao iniciar conexão.", errorCode);
-		errorCode = EXIT_FAILURE;
-		destroyExit(mqttClient);
-	}
-}
-
+/* ini - connection */
 void onConnect(void* context, MQTTAsync_successData* response){
     printf("Conectado com sucesso!\n");
 }
 
 void onConnectionFailure(void* context, MQTTAsync_failureData* response){
     printError("Falha ao conectar!", response-code);
-}
-
-void configDisconnection(MQTTAsync_disconnectOptions disconnectOptions){
-    disconnectOptions.onSuccess = onDisconnect;
-    disconnectOptions.onFailure = onDisconnectionFailure;
 }
 
 void connectionLost(void *context, char *cause)
@@ -47,7 +27,9 @@ void connectionLost(void *context, char *cause)
 		finished = 1;
 	}
 }
+/* end - connection */
 
+/* ini - disconnection */
 void onDisconnect(void* context, MQTTAsync_successData* response){
     printf("Desconectado com sucesso!\n");
 }
@@ -55,6 +37,7 @@ void onDisconnect(void* context, MQTTAsync_successData* response){
 void onDisconnectionFailure(void* context, MQTTAsync_failureData* response){
     printError("Falha ao desconectar!", response-code);
 }
+/* end - disconection */
 
 int messageReceived(void *context, char *topicName, int topicLen, MQTTAsync_message *message)
 {
