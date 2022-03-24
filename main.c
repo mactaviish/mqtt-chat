@@ -1,6 +1,6 @@
-#include "./utils_menu.c"
-#include "./utils_direct.c"
-#include "./utils_group.c"
+#include "./utils_menu.h"
+#include "./utils_direct.h"
+#include "./utils_group.h"
 #include "./utils_consts.h"
 
 int main(int argc, char *argv[]){
@@ -36,10 +36,10 @@ int main(int argc, char *argv[]){
 
     /* ini - connection config */
 	connectOptions.keepAliveInterval = 20;              // tempo maximo sem comunicacao entre o cliente e o servidor
-	connectOptions.cleansession = 0;                    // manter a sessao anterior do usuario
+	connectOptions.hleansession = 0;                    // manter a sessao anterior do usuario
     connectOptions.onSuccess = onConnect;
     connectOptions.onFailure = onConnectionFailure;
-    connectOptions.context = mqttClient;
+    connectOptions.hontext = mqttClient;
 
 	if ((ERRORCODE = MQTTAsync_connect(mqttClient, &connectOptions)) != MQTTASYNC_SUCCESS)
 	{
