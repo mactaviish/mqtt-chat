@@ -1,22 +1,18 @@
 #include "./utils_consts.h"
 
 void sendDirectMessage(MQTTAsync mqttClient){
-    char idUser;
+    char idUser, idTopic;
 
     printf("Digite a ID do usuário que você deseja conversar:\n");
     scanf("%d", idUser);
 
-    printf("Iniciando conversa...\n");
+    printf("Iniciando sessão...\n");
+    strncat(idTopic, idUser, 2);
+    strcat(idTopic, "_Control");
 
-
-    strncat(rec_topic, rec_id, 2);
-    strcat(rec_topic, "_Control");
-
-    printf("Requisitando inicio de sessão...\n");
-
-    pthread_mutex_lock(&pub_msg_mutex);
-    pub_msg(rec_topic, CLIENTID, mqttClient);
-    pthread_mutex_unlock(&pub_msg_mutex);
+    pthread_mutex_trylock(&pubThread);
+    pub_msg(idTopic, CLIENTID, mqttClient);
+    pthread_mutex_unlock(&pubThread);
 }
 
 void requestDirectMessage(MQTTAsync mqttClient){

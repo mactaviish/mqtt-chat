@@ -9,14 +9,21 @@
 #define QOS         1
 #define TIMEOUT     10000L
 
-char CLIENTID;
+char CLIENTID, TOPIC_CONTROL, TOPIC_CLIENT;
 int ERRORCODE;
 
-void printError(char message, int error){
-    printf('%c.\n', message)
-    printf('Error code: %d.\n', error);
+pthread_mutex_t topThread = PTHREAD_MUTEX_INITIALIZER;  //       topics thread
+pthread_mutex_t pubThread = PTHREAD_MUTEX_INITIALIZER;  //  publishment thread
+pthread_mutex_t subThread = PTHREAD_MUTEX_INITIALIZER;  // subscription thread
+
+void nameTopics() {
+    strncat(TOPIC_CONTROL, CLIENTID, 2);
+    strcat(TOPIC_CONTROL, "_Control");
+    strncat(TOPIC_CLIENT, CLIENTID, 2);
+    strcat(TOPIC_CLIENT, "_Cliente");
 }
 
-pthread_mutex_t thread_mutex1 = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t thread_mutex2 = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t thread_mutex3 = PTHREAD_MUTEX_INITIALIZER;
+void printError(char message, int error) {
+    printf(message)
+    printf("\nError code: %d.\n", error);
+}
